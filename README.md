@@ -1,7 +1,7 @@
-# 📄 OceanAI – Multimodal PDF Question Answering using RAG
+# 📄 Multimodal PDF Question Answering using RAG
 
 ## 🧩 Overview
-> OceanAI is a comprehensive, modular system built to perform question answering on PDF documents by combining text and visual content understanding. It uses a Retrieval-Augmented Generation (RAG) architecture with LangChain and Ollama, integrates sentence-level semantic chunking, and supports basic Visual Question Answering (VQA) via image captioning. The frontend is built with Streamlit for user interaction, and the backend is implemented in FastAPI for API orchestration.
+> The project is a comprehensive, modular system built to perform question answering on PDF documents by combining text and visual content understanding. It uses a Retrieval-Augmented Generation (RAG) architecture with LangChain and Ollama, integrates sentence-level semantic chunking, and supports basic Visual Question Answering (VQA) via image captioning. The frontend is built with Streamlit for user interaction, and the backend is implemented in FastAPI for API orchestration.
 
 This solution reflects a practical approach suitable for junior engineers and data science interns, focused on clean design, modular logic, and lightweight open-source tools.
 
@@ -69,9 +69,8 @@ streamlit run streamlit_app/ui.py
 > Ensure Ollama is installed and the local LLM model is running (e.g., `ollama run llama3`).
 
 ## 📦 Folder Structure
-
 ```
-OceanAI_Project/
+Project/
 ├── app/
 │   ├── core/
 │   ├── api/
@@ -81,14 +80,12 @@ OceanAI_Project/
 ├── requirements.txt
 └── README.md
 ```
-
 ## ✅ Testing
 
 Run unit tests:
 ```bash
 pytest tests/
 ```
-
 Test coverage includes:
 - Chunking logic
 - Embedding generation
@@ -96,14 +93,12 @@ Test coverage includes:
 - VQA caption output
 
 ## 📌 Known Limitations
-
 - VQA only supports static image captioning
 - No visual highlighting on PDF or image
 - Backend and frontend are not containerized
 - No user authentication or session management
 
 ## 🌱 Future Improvements
-
 - Advanced VQA integration with region detection
 - PDF page number + section highlighting in answers
 - Dockerized backend + frontend for production

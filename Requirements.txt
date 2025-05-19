@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+streamlit
+fitz
+nltk
+sentence-transformers
+chromadb
+langchain
+ollama
+pillow
+transformers
+torch
+pydantic
+requests
+pytest

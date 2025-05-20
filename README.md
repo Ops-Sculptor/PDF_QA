@@ -1,108 +1,112 @@
-# 📄 Multimodal PDF Question Answering using RAG
+##READ.ME
 
-## 🧩 Overview
-> The project is a comprehensive, modular system built to perform question answering on PDF documents by combining text and visual content understanding. It uses a Retrieval-Augmented Generation (RAG) architecture with LangChain and Ollama, integrates sentence-level semantic chunking, and supports basic Visual Question Answering (VQA) via image captioning. The frontend is built with Streamlit for user interaction, and the backend is implemented in FastAPI for API orchestration.
-
-This solution reflects a practical approach suitable for junior engineers and data science interns, focused on clean design, modular logic, and lightweight open-source tools.
-
-## 🎯 Objective
-> To develop a robust RAG pipeline using LangChain and Ollama, capable of extracting structured data from PDFs and answering both text and image-based user queries, with a clean interface and scalable backend design.
-
-## ⚙️ Tech Stack
-- **Frontend**: Streamlit
-- **Backend**: FastAPI
-- **PDF Parsing**: PyMuPDF, unstructured
-- **Chunking**: NLTK sentence tokenizer + token limit logic
-- **Embeddings**: Sentence Transformers (MiniLM)
-- **Vector DB**: ChromaDB with metadata
-- **LLM Engine**: Ollama (LLaMA3 or similar)
-- **VQA**: BLIP captioning (Hugging Face)
-- **Testing**: Pytest
-
-## 🔧 Features
-- Upload structured PDF files with paragraphs, tables, and images.
-- Automatically parse PDF and chunk text semantically.
-- Generate embeddings from each chunk for semantic similarity search.
-- Store text chunks with metadata in ChromaDB for efficient retrieval.
-- Retrieve relevant context using LangChain RetrievalQA.
-- Answer user queries using local LLM (via Ollama).
-- Extract images and caption them using BLIP for basic VQA.
-- Display answers and relevant PDF context in Streamlit interface.
-
-## 🏗️ Architecture
-
+## 📘 Multimodal RAG Pipeline for PDF & Visual Question Answering
+This system enables question answering from PDF documents using both textual and visual (image-based) content. It leverages open-source LLMs, LangChain, Sentence Transformers, BLIP, and FAISS for fast retrieval and multimodal response generation.
+  
+## 📐 System Architecture
+```mermaid
+graph TD
+    A[User Uploads PDF / Image + Question] -->|UI| B(Streamlit)
+    B -->|Sends to| C[FastAPI Backend]
+    C --> D[PDF Parser (text + images)]
+    D --> E[Text Chunker]
+    E --> F[Embedding Generator]
+    F --> G[FAISS Vector Store]
+    D --> H[Image Captioning (BLIP)]
+    G --> I[LangChain RetrievalQA]
+    H --> I
+    I --> J[Final Answer]
+    J -->|Displays in UI| B
 ```
-User → Streamlit UI → FastAPI API
-          ↓
-     PDF Upload
-          ↓
-  PDF Parser (Text + Images)
-          ↓
-    Text Chunker (Semantic Units)
-          ↓
-Embedding → ChromaDB (w/ Metadata)
-          ↓
-       LangChain RAG
-      ↙             ↘
- VQA Caption       Query
-    ↘                ↓
-     Merged Prompt → LLM → Answer
-```
+  
+## ⚙️ Set-Up and Installation
 
-## 🚀 Running the Project
-
-### 1. Install Dependencies
+### 1. Clone the Repository
 ```bash
+git clone https://github.com/your-org/multimodal-rag-pipeline.git
+cd multimodal-rag-pipeline
+```
+### 2. Install Dependencies
+Make sure you have Python 3.10 or higher.
+```bash
+python -m venv venv
+source venv/bin/activate  # or venv\Scripts\activate on Windows
 pip install -r requirements.txt
 ```
-
-### 2. Start Backend
+### 3. Install NLTK Tokenizer (first run only)
+```python
+import nltk
+nltk.download('punkt')
+```
+### 4. Start the Backend (FastAPI)
 ```bash
-uvicorn app.main:app --reload
+uvicorn main:app --reload
 ```
-
-### 3. Start Frontend
+### 5. Start the Frontend (Streamlit)
 ```bash
-streamlit run streamlit_app/ui.py
+streamlit run ui.py
+```
+### Directory Structure:
+```
+project/
+├── main.py                # FastAPI backend
+├── ui.py                  # Streamlit frontend
+├── pipeline.py            # End-to-end orchestrator
+├── pdf_parser.py          # PDF text and image extraction
+├── chunker.py             # Sentence-based text chunking
+├── embedder.py            # Sentence Transformer embedding
+├── vector_store.py        # FAISS storage and retrieval
+├── qa_engine.py           # LangChain QA generation
+├── vqa.py                 # Visual Question Answering (BLIP)
+├── config.py              # Configuration constants
+├── test_pipeline.py       # Unit and integration tests
+├── requirements.txt       # Python dependencies
+└── sample_data/           # Sample PDF and images for testing
+```
+## 🔌 API Usage
+### 📤 POST `/process/`
+Submit a PDF + text query and receive an answer.
+#### Request:
+- **Content-Type:** `multipart/form-data`
+- **Parameters:**
+  - `file`: PDF file
+  - `query`: Textual question
+#### Sample Code:
+```python
+import requests
+
+files = {"file": open("sample.pdf", "rb")}
+data = {"query": "What is the conclusion?"}
+response = requests.post("http://localhost:8000/process/", files=files, data=data)
+print(response.json())
+```
+#### Response:
+```json
+{
+  "answer": "The document concludes with..."
+}
 ```
 
-> Ensure Ollama is installed and the local LLM model is running (e.g., `ollama run llama3`).
+## ✅ Features
+- PDF text extraction and chunking
+- Embedding with SentenceTransformers
+- Visual image captioning with BLIP
+- LangChain + Ollama RetrievalQA
+- Fast and scalable with FAISS
+- UI via Streamlit
+- API via FastAPI
 
-## 📦 Folder Structure
-```
-Project/
-├── app/
-│   ├── core/
-│   ├── api/
-│   └── main.py
-├── streamlit_app/
-├── tests/
-├── requirements.txt
-└── README.md
-```
-## ✅ Testing
-
-Run unit tests:
+## 🧪 Testing
+Run all unit and integration tests:
 ```bash
-pytest tests/
+pytest test_pipeline.py --disable-warnings
 ```
-Test coverage includes:
-- Chunking logic
-- Embedding generation
-- Vector retrieval
-- VQA caption output
-
-## 📌 Known Limitations
-- VQA only supports static image captioning
-- No visual highlighting on PDF or image
-- Backend and frontend are not containerized
-- No user authentication or session management
-
-## 🌱 Future Improvements
-- Advanced VQA integration with region detection
-- PDF page number + section highlighting in answers
-- Dockerized backend + frontend for production
-- Cloud vector store support (Qdrant, Pinecone)
-
-## 👨‍💻 Author
-Built by a junior software engineer with a background in microservices and a data science traineeship, this project emphasizes practical, modular, and testable design suitable for entry-level deployment and learning showcase.
+Ensure `test_doc.pdf` and `test_image.jpg` are present in `sample_data/`.
+## 🚀 To-Do / Roadmap
+- [ ] Add support for image-based question routing
+- [ ] Enhance OCR for scanned PDFs
+- [ ] Deploy with Docker
+- [ ] Add feedback ranking and retraining loop
+ 
+## 📜 License
+The Unlicensed.

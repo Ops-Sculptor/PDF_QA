@@ -1,0 +1,70 @@
+{
+  "project": "Multimodal PDF + Image Question Answering System",
+  "language": "Python 3.10+",
+  "frameworks": {
+    "frontend": "Streamlit",
+    "backend": "FastAPI"
+  },
+  "modules": {
+    "ui": {
+      "type": "Streamlit App",
+      "features": [
+        "PDF upload",
+        "Image upload (optional)",
+        "Text query input",
+        "Display answer and image preview"
+      ]
+    },
+    "backend": {
+      "type": "FastAPI Server",
+      "endpoints": {
+        "/process/": {
+          "method": "POST",
+          "params": {
+            "file": "PDF file (required)",
+            "query": "string (required)",
+            "image": "image file (optional)"
+          },
+          "response": {
+            "status": "200 OK",
+            "content": {
+              "answer": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "pipeline": {
+    "steps": [
+      "Extract text and images from PDF",
+      "Chunk text by sentences",
+      "Generate embeddings using SentenceTransformer",
+      "Store and retrieve chunks using FAISS",
+      "Use BLIP for visual captioning (if image is provided)",
+      "Combine context and answer query using LangChain + Ollama"
+    ]
+  },
+  "rules": {
+    "error_handling": "All backend exceptions must return a proper JSON error message",
+    "file_handling": "Uploaded files must be saved to temp directory and deleted if needed",
+    "response_time": "Must handle medium-size PDFs (<20MB) in under 5 seconds",
+    "security": "No hardcoded API keys or paths; use environment configs if necessary"
+  },
+  "testing": {
+    "framework": "pytest",
+    "coverage_goal": "90%",
+    "fixtures_required": [
+      "sample PDF with tables, paragraphs, and 1 embedded image",
+      "standalone image file"
+    ]
+  },
+  "ci": {
+    "platform": "GitHub Actions",
+    "checks": [
+      "Test pass/fail",
+      "Linting (optional)",
+      "Dependency installation"
+    ]
+  }
+}

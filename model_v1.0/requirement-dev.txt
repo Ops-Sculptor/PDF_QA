@@ -1,0 +1,34 @@
+# 🧠 Core Application Frameworks
+fastapi==0.110.0
+uvicorn[standard]==0.29.0
+streamlit==1.32.2
+
+# 📄 PDF Handling
+PyMuPDF==1.23.22           # for fitz
+pdfminer.six==20221105     # text extraction fallback
+
+# 🔍 Retrieval & NLP
+sentence-transformers==2.2.2
+transformers==4.36.2        # ✅ Compatible with s-transformers
+torch==2.3.0                # ✅ Required for get_default_device
+nltk==3.8.1
+
+# 🔎 Vector Store + RAG
+faiss-cpu==1.7.4
+langchain==0.1.16
+langchain-community==0.0.34
+
+# 🖼 Vision-Language Models (BLIP ready)
+Pillow==10.2.0
+accelerate==0.29.2
+
+# 🔗 Model Hub Integration
+huggingface_hub==0.20.3     # ✅ Compatible with transformers 4.36+
+
+# 🧪 Testing
+pytest==8.1.1
+
+# 🛠️ Utilities
+python-dotenv==1.0.1
+aiofiles==23.2.1
+requests==2.31.0

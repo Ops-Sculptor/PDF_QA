@@ -56,6 +56,29 @@ uvicorn main:app --reload
 ```bash
 streamlit run ui.py
 ```
+## 📦 Project Requirements
+
+Below are the core Python packages needed to run this project. These are included in `requirements.txt`:
+
+```
+fastapi==0.110.0
+uvicorn[standard]==0.29.0
+streamlit==1.32.2
+PyMuPDF==1.23.22
+pdfminer.six==20221105
+sentence-transformers==2.2.2
+nltk==3.8.1
+faiss-cpu==1.7.4
+langchain==0.1.16
+transformers==4.40.1
+torch==2.2.2
+Pillow==10.2.0
+accelerate==0.29.2
+python-dotenv==1.0.1
+requests==2.31.0
+pytest==8.1.1
+aiofiles==23.2.1
+```
 
 ### Directory Structure:
 ```
@@ -74,9 +97,6 @@ project/
 ├── requirements.txt       # Python dependencies
 └── sample_data/           # Sample PDF and images for testing
 ```
-
----
-
 ## 🔌 API Usage
 
 ### 📤 POST `/process/`

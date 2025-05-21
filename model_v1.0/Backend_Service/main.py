@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from pipeline import run_pipeline
+from Backend_Service.core.pipeline import run_pipeline
 import os
 import shutil
 
